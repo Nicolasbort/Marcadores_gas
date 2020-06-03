@@ -1,37 +1,53 @@
 #include <opencv2/opencv.hpp>
-#include <string>
 #include <iostream>
 
-#define MWHITE 180 //140
-#define mWHITE 5    //0
+#define MWHITE 55 //140
+#define mWHITE 0    //0
 
-#define MSAT 55    //25
+#define MSAT 40    //25
 #define mSAT 0     //0
 
-#define MVAL 255    //255
-#define mVAL 210    //220
+#define MVAL 30    //255
+#define mVAL 0    //220
 
 using namespace cv;
+
 
 class ROI
 {
 public:
 
-    Mat mainROI;
+    Mat image;
     std::vector<Rect> posNumbers;
+    RotatedRect biggest_rect;
 
+    ROI();
     ROI(Mat);
     ROI(Mat, Rect);
+    ROI(Mat, RotatedRect);
+
     void set(Mat);
-    void show();
+    void set(Mat, RotatedRect);
+    void show(const char*);
+    void showPossibleNumbers();
+    void invertColor();
+    void drawRotated(Mat);
+    void rotatedToImage(Mat);
+    void resize(int, int);
+    void fill(Scalar);
+
     int area();
-    void findPosNumbers();
-    void showAllRects();
+    
+    bool found(Mat);
+
+    Mat getImage();
 
 private:
 
     std::vector<std::vector<Point>> contours;
     Mat kernel;
 
+    Point2f* getCorners(RotatedRect);
     bool setContours();
+    void findPossibleNumbers();
 };
