@@ -12,13 +12,15 @@
 
 using namespace cv;
 
+void invert_color(Mat);
 
 class ROI
 {
 public:
 
     Mat image;
-    std::vector<Rect> posNumbers;
+    Mat editable_image, clean_img;
+    std::vector<Rect> numbers;
     RotatedRect biggest_rect;
 
     ROI();
@@ -29,17 +31,24 @@ public:
     void set(Mat);
     void set(Mat, RotatedRect);
     void show(const char*);
-    void showPossibleNumbers();
+    void show_editable();
+    void show_clean();
     void invertColor();
     void drawRotated(Mat);
+    void rotateImage(double);
     void rotatedToImage(Mat);
     void resize(int, int);
     void fill(Scalar);
+    void clean_image();
+    void getRectNumbersDynamic(Mat);
+    void getRectNumbersStatic(Mat);
+    void improve_image();
 
     int area();
     
     bool found(Mat);
 
+    
     Mat getImage();
 
 private:
@@ -49,5 +58,4 @@ private:
 
     Point2f* getCorners(RotatedRect);
     bool setContours();
-    void findPossibleNumbers();
 };
