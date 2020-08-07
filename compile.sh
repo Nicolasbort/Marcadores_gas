@@ -2,4 +2,4 @@
 
 FILE="detection"
 
-g++ $FILE.cpp ROI/ROI.cpp landingMark.cpp `pkg-config --cflags --libs opencv` -o $FILE
+g++ $FILE.cpp ROI/ROI.cpp LandingMark/landingMark.cpp `pkg-config --cflags --libs opencv tesseract` -o $FILE
