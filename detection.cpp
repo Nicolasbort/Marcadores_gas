@@ -9,7 +9,7 @@ using namespace cv;
 using namespace std;
 
 #define DEBUGCOLOR false
-#define DEBUG_MODE true
+#define DEBUG_MODE false
 
 // Arrays utilizados no inRange
 
@@ -438,7 +438,7 @@ int main(int argc, char *argv[])
     long cont_68_tess = 0, cont_10_tess = 0, cont_68_knn = 0, cont_10_knn = 0;
     long contador_frames = 0;
 
-    long count_non_percent = 0;
+    long count_non_percent = 0, count_percent = 0;
     long knn_10_percent = 0, knn_68_percent = 0, tess_68_percent = 0;
 
     Mat img_rotate_test; 
@@ -504,6 +504,19 @@ int main(int argc, char *argv[])
                 case SPACE:
 
                     cout << "Entrando no editor de limiares\n";
+                    cout << "Pressione ESC para sair\n\n";
+                    cout << "##########################\n\n";
+
+                    cout << "DESLIGAR O CAPSLOCK PARA FUNCIONAR\n\n";
+                    cout << "AZUL (<-)  AMARELO (->)\n\n";
+
+                    cout << "Incrementar valores minimos:  Q   W   E\n";
+                    cout << "Drecrementar valores minimos: A   S   D\n\n";
+                    
+                    cout << "Incrementar valores maximos:  T   Y   U\n";
+                    cout << "Drecrementar valores maximos: G   H   J\n\n";
+
+
                     while (keySpace != ESC)
                     {
                         keySpace = waitKey(0);
@@ -622,13 +635,13 @@ int main(int argc, char *argv[])
                                     break;
 
                             case KEY_LEFT:
-                                cout << "ARRAY BLUE SELECIONADO\n";
+                                cout << "BLUE SELECIONADO\n";
                                 ARRAY_NAME = "BLUE";
                                 color_selector = 0;
                                 break;
 
                             case KEY_RIGHT:
-                                cout << "ARRAY YELLOW SELECIONADO\n";
+                                cout << "YELLOW SELECIONADO\n";
                                 ARRAY_NAME = "YELLOW";
                                 color_selector = 1;
                                 break;
@@ -717,67 +730,7 @@ int main(int argc, char *argv[])
 
                     ////// INICIO ROTAÇÃO DE IMAGEM //////
 
-                        // Mat marcador_copy = marcador.image.clone();
-
-                        // if (rotated){
-                        //     marcador.rotateImage(90);
-                        // }
-
-                        // cvtColor(marcador.image, img_teste, COLOR_BGR2HSV);
-                        // inRange(img_teste, Scalar(ARR_MINMARCADOR_HSV[0], ARR_MINMARCADOR_HSV[1], ARR_MINMARCADOR_HSV[2]), Scalar(ARR_MAXMARCADOR_HSV[0], ARR_MAXMARCADOR_HSV[1], ARR_MAXMARCADOR_HSV[2]), img_inrange );
-                        // invert_color(img_inrange);
-
-
-                        // marcador.getRectNumbersStatic(img_inrange);
-                        // img_percent = img_inrange(marcador.numbers[2]);
-
-
-                        // string n_10_knn;
-                        // string n_68_tess;
-                        // string returned = getPercent(img_percent);
-
-                        // if (returned.compare("%") != 0 && count_non_percent >= 2)
-                        // {
-                        //     SUM_ANGLE += 90;
-                        //     count_non_percent = 0;
-                        // }
-                        // else
-                        // {
-                        //     SUM_ANGLE = 0;
-                        //     count_non_percent++;
-                            
-                        //     img_10 = img_inrange(marcador.numbers[1]);
-                        //     img_68 = img_inrange(marcador.numbers[0]);
-                        //     copyMakeBorder(img_68, img_68, 10, 10, 10, 10, BORDER_ISOLATED, 255);
-
-                        //     n_10_knn = getKNNChar(img_10, "10");
-                        //     n_68_tess = tess.extract(img_68);
-
-                        //     if (n_10_knn.compare("10") == 0){
-                        //       knn_10_percent++;
-                        //     }
-
-                        //     if (n_68_tess.compare("68\n") == 0){
-                        //       tess_68_percent++;
-                        //     }
-                        //     contador_frames++;
-
-                        // }
-
-                        // // cout << "count: " << count_non_percent << "\n";
-                        // cout << fixed;
-                        // cout << setprecision(1);
-                        // cout << "Taxa 10: " << (knn_10_percent / (float)contador_frames)*100 << "%     Taxa 68: " << (tess_68_percent / (float)contador_frames)*100 << "%\n";
-
-                        
-                        // marcador.show("ROTATED");
-
-                    ////// FIM ROTAÇÃO DE IMAGEM //////
-
-
-
-
-                    ////// INICIO NÃO PEGAR VALORES ENQUANTO % FOR DIRETENRE //////
+                        Mat marcador_copy = marcador.image.clone();
 
                         cvtColor(marcador.image, img_teste, COLOR_BGR2HSV);
                         inRange(img_teste, Scalar(ARR_MINMARCADOR_HSV[0], ARR_MINMARCADOR_HSV[1], ARR_MINMARCADOR_HSV[2]), Scalar(ARR_MAXMARCADOR_HSV[0], ARR_MAXMARCADOR_HSV[1], ARR_MAXMARCADOR_HSV[2]), img_inrange );
@@ -786,66 +739,135 @@ int main(int argc, char *argv[])
 
                         marcador.getRectNumbersStatic(img_inrange);
                         img_percent = img_inrange(marcador.numbers[2]);
-                        img_10 = img_inrange(marcador.numbers[1]);
-                        img_68 = img_inrange(marcador.numbers[0]);
 
-                        string knn_10, knn_68;
+
+                        string n_10_knn;
                         string n_68_tess;
                         string returned = getPercent(img_percent);
 
-                        copyMakeBorder(img_68, img_68, 10, 10, 10, 10, BORDER_ISOLATED, 255);
-                        copyMakeBorder(img_10, img_10, 5, 5, 5, 5, BORDER_ISOLATED, 255);
-                        
+                        if (returned.compare("%") != 0){
+                            count_non_percent++;
 
-                        if (returned.compare("%") != 0)
-                        {
-                            if (count_non_percent <= 5)
-                            {
-                                knn_10 = getKNNChar(img_10, "10");
-                                n_68_tess = tess.extract(img_68);
-                                
-                                if (knn_10.compare("10") == 0){
-                                    knn_10_percent++;
-                                }
-
-                                if (n_68_tess.compare("68\n") == 0){
-                                    tess_68_percent++;
-                                }
-
-                                contador_frames++;
-                                count_non_percent++;
-                            }
-                            else
-                            {
-                                cout << "LIMITE ATINGIDO\n\n";
+                            if (count_percent > 0){
+                                count_percent--;
                             }
                         }
-                        else
-                        {
-                            if (count_non_percent > 0){
-                                count_non_percent--;
-                            }
-                    
+                        else{
+                            contador_frames++;
 
-                            knn_10 = getKNNChar(img_10, "10");
+                            img_10 = img_inrange(marcador.numbers[1]);
+                            img_68 = img_inrange(marcador.numbers[0]);
+                            copyMakeBorder(img_68, img_68, 10, 10, 10, 10, BORDER_ISOLATED, 255);
+
+                            n_10_knn = getKNNChar(img_10, "10");
                             n_68_tess = tess.extract(img_68);
-                            
-                            if (knn_10.compare("10") == 0){
-                              knn_10_percent++;
+
+                            if (n_10_knn.compare("10") == 0){
+                                knn_10_percent++;
                             }
 
                             if (n_68_tess.compare("68\n") == 0){
-                              tess_68_percent++;
+                                tess_68_percent++;
                             }
-                            
-                            contador_frames++;
+
+                            cout << fixed;
+                            cout << setprecision(1);
+                            cout << "Taxa 10: " << (knn_10_percent / (float)contador_frames)*100 << "%     Taxa 68: " << (tess_68_percent / (float)contador_frames)*100 << "%\n";
+
+                            count_percent++;
+
+                            if (count_non_percent > 0){
+                                count_non_percent--;
+                            }
                         }
 
-                        imshow("inRange", img_inrange);
+
+
+                        if (count_non_percent >= 3)
+                        {
+                            SUM_ANGLE += 90;
+                            count_non_percent--;
+                            if (SUM_ANGLE == 360){
+                                SUM_ANGLE = 0;
+                            }
+                        }
+                        
+                        marcador.show("Marcador");
+
+                    ////// FIM ROTAÇÃO DE IMAGEM //////
+
+
+
+
+                    ////// INICIO NÃO PEGAR VALORES ENQUANTO % FOR DIRETENRE //////
+
+                        // cvtColor(marcador.image, img_teste, COLOR_BGR2HSV);
+                        // inRange(img_teste, Scalar(ARR_MINMARCADOR_HSV[0], ARR_MINMARCADOR_HSV[1], ARR_MINMARCADOR_HSV[2]), Scalar(ARR_MAXMARCADOR_HSV[0], ARR_MAXMARCADOR_HSV[1], ARR_MAXMARCADOR_HSV[2]), img_inrange );
+                        // invert_color(img_inrange);
+
+
+                        // marcador.getRectNumbersStatic(img_inrange);
+                        // img_percent = img_inrange(marcador.numbers[2]);
+                        // img_10 = img_inrange(marcador.numbers[1]);
+                        // img_68 = img_inrange(marcador.numbers[0]);
+
+                        // string knn_10, knn_68;
+                        // string n_68_tess;
+                        // string returned = getPercent(img_percent);
+
+                        // copyMakeBorder(img_68, img_68, 10, 10, 10, 10, BORDER_ISOLATED, 255);
+                        // copyMakeBorder(img_10, img_10, 5, 5, 5, 5, BORDER_ISOLATED, 255);
+                        
+
+                        // if (returned.compare("%") != 0)
+                        // {
+                        //     if (count_non_percent <= 5)
+                        //     {
+                        //         knn_10 = getKNNChar(img_10, "10");
+                        //         n_68_tess = tess.extract(img_68);
+                                
+                        //         if (knn_10.compare("10") == 0){
+                        //             knn_10_percent++;
+                        //         }
+
+                        //         if (n_68_tess.compare("68\n") == 0){
+                        //             tess_68_percent++;
+                        //         }
+
+                        //         contador_frames++;
+                        //         count_non_percent++;
+                        //     }
+                        //     else
+                        //     {
+                        //         cout << "LIMITE ATINGIDO\n\n";
+                        //     }
+                        // }
+                        // else
+                        // {
+                        //     if (count_non_percent > 0){
+                        //         count_non_percent--;
+                        //     }
                     
-                        cout << fixed;
-                        cout << setprecision(1);
-                        cout <<"Taxa 10: " << (knn_10_percent / (float)contador_frames)*100 << "%    Taxa 68: " << (tess_68_percent / (float)contador_frames)*100 << "%\n";
+
+                        //     knn_10 = getKNNChar(img_10, "10");
+                        //     n_68_tess = tess.extract(img_68);
+                            
+                        //     if (knn_10.compare("10") == 0){
+                        //       knn_10_percent++;
+                        //     }
+
+                        //     if (n_68_tess.compare("68\n") == 0){
+                        //       tess_68_percent++;
+                        //     }
+                            
+                        //     contador_frames++;
+                        // }
+
+                        // imshow("inRange", img_inrange);
+                    
+                        // cout << fixed;
+                        // cout << setprecision(1);
+                        // cout <<"Taxa 10: " << (knn_10_percent / (float)contador_frames)*100 << "%    Taxa 68: " << (tess_68_percent / (float)contador_frames)*100 << "%\n";
                         
                     ////// FIM NÃO PEGAR VALORES ENQUANTOS % FOR DIRETENRE //////
 
@@ -871,7 +893,7 @@ int main(int argc, char *argv[])
 
             main_image.show();
 
-            int key = waitKey(20);
+            int key = waitKey(30);
 
             if (key == SPACE)
             {
