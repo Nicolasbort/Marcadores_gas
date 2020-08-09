@@ -44,7 +44,7 @@
 
     // Limiares da cor amarela ( Imagem HSV )
     #define MINYELLOW       7
-    #define MAXYELLOW       60
+    #define MAXYELLOW       85
 
     #define MINSATYELLOW    90
     #define MAXSATYELLOW    210
@@ -99,17 +99,17 @@
 #define MAXVALBLACK 45
 
 
-
+#define DEBUG(x) std::cout << x << "\n"
 
 
 #define GAUSSIANFILTER      3
 #define KERNELSIZE          7
 
 
-#define COLOR_RED   Scalar(0, 0, 255)
-#define COLOR_GREEN Scalar(0, 255, 0)
-#define COLOR_BLUE  Scalar(255, 0, 0)
-#define COLOR_BLACK Scalar(0,  0,  0)
+#define cvCOLOR_RED   cv::Scalar(0, 0, 255)
+#define cvCOLOR_GREEN cv::Scalar(0, 255, 0)
+#define cvCOLOR_BLUE  cv::Scalar(255, 0, 0)
+#define cvCOLOR_BLACK 0
 
 
 #define BLUE_ID 48
@@ -120,6 +120,22 @@
 #define ESC         27
 #define RETURN      10
 #define SPACE       32
+#define KEY_LEFT    81
+#define KEY_TOP     82
+#define KEY_RIGHT   83
+#define KEY_DOWN    84
+#define KEY_Q       113
+#define KEY_A       97
+#define KEY_W       119
+#define KEY_S       115
+#define KEY_E       101
+#define KEY_D       100
+#define KEY_T       116
+#define KEY_G       103
+#define KEY_Y       121
+#define KEY_H       104
+#define KEY_U       117
+#define KEY_J       106
 
 
 // Porcentagem utilizada para verificar se é quadrado ou nao
