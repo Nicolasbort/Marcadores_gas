@@ -408,12 +408,30 @@ ROI findROI(Mat img_c1, Mat img_main)
 int main(int argc, char *argv[])
 {
 
-  if (argc < 2)
-  {
-    cout << "Insira o nome do video!" << endl;
-    return -1;
-  }
+    if (argc < 2)
+    {
+        cout << "Insira o nome do video!\n";
+        return -1;
+    }
 
+    if (argc < 3)
+    {
+        cout << "Insira true para modo debug ou false para normal\n";
+        return -1;
+    }
+
+    bool DEBUG;
+    if (strcmp(argv[2], "true") == 0)
+    {
+        DEBUG = true;
+    }else if (strcmp(argv[2], "false") == 0)
+    {
+        DEBUG = false;
+    }else{
+        cout << argv[2] << " não é uma opção válida. Digite true ou false\n";
+        return -1;
+    }
+    
 
     VideoCapture cap(argv[1]);
 
@@ -447,7 +465,8 @@ int main(int argc, char *argv[])
     ROI base, marcador;
     Mat base_C1;
 
-    #if DEBUG_MODE
+    if (DEBUG)
+    {
         cout << "\x1B[2J\x1B[H"; 
         cout << "##########################\n\n";
         cout << "Entrando no debug mode\n";
@@ -684,8 +703,9 @@ int main(int argc, char *argv[])
 
         cout << "\nESC pressionado. Fechando o programa\n";
 
-    #else
-
+    }
+    else    // MODO NORMAL
+    {
         train();
 
         while(true)
@@ -782,7 +802,6 @@ int main(int argc, char *argv[])
                         }
 
 
-
                         if (count_non_percent >= 3)
                         {
                             SUM_ANGLE += 90;
@@ -795,6 +814,7 @@ int main(int argc, char *argv[])
                         marcador.show("Marcador");
 
                     ////// FIM ROTAÇÃO DE IMAGEM //////
+
 
 
 
@@ -921,5 +941,5 @@ int main(int argc, char *argv[])
                 // }
             }
         }
-    #endif
+    }
 }
