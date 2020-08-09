@@ -6,4 +6,4 @@ Detecção dos sensores de gás do desafio da Petrobras
 `./compile.sh`
 
 # Rodar
-`./detection **NomeDoVideo**`
+`./detection **NomeDoVideo** **Debug(true) Ou Normal(false)**`
