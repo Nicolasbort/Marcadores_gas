@@ -53,11 +53,11 @@ public:
     ocr->End();
   }
   
-  string extract(Mat img, int channels=1)
+  string extract(Mat img, const char* name = "Imagem", int channels=1)
   {
-    string numbers;
+    imshow(name, img);
 
-    imshow("68", img);
+    string numbers;
 
     ocr->SetImage(img.data, img.cols, img.rows, channels, img.step);
 
@@ -130,6 +130,8 @@ string getKNNChar(cv::Mat img, const char* name)
 {
     Mat matTestingNumbers = img.clone();
 
+    imshow(name, img);
+
     Rect rect_left( Point(10, 0), Point(img.cols * 0.52, img.rows) );
     Rect rect_right( Point(img.cols * 0.52, 0), Point(img.cols, img.rows) );
 
@@ -155,9 +157,8 @@ string getKNNChar(cv::Mat img, const char* name)
     resize(LEFT_ROI, LEFT_ROI, Size(RESIZED_IMAGE_WIDTH, RESIZED_IMAGE_HEIGHT));  
     resize(RIGHT_ROI, RIGHT_ROI, Size(RESIZED_IMAGE_WIDTH, RESIZED_IMAGE_HEIGHT));
 
-
-    imshow(name + '0', LEFT_ROI);
-    imshow(name + '1', RIGHT_ROI);
+    // imshow(name + '0', LEFT_ROI);
+    // imshow(name + '1', RIGHT_ROI);
 
     Mat LEFT_FLOAT, RIGHT_FLOAT;
 
@@ -198,11 +199,9 @@ string getPercent(Mat img)
   // filter image from grayscale to black and white
   adaptiveThreshold(img, matThresh, 255, ADAPTIVE_THRESH_GAUSSIAN_C, THRESH_BINARY_INV, 11, 2);    
 
-
   resize(matThresh, matThresh, Size(RESIZED_IMAGE_WIDTH, RESIZED_IMAGE_HEIGHT));
 
-
-  imshow("PERCENTresize", matThresh);
+//   imshow("PERCENTresize", matThresh);
 
   Mat matROIFloat;
   matThresh.convertTo(matROIFloat, CV_32FC1);  
@@ -780,7 +779,7 @@ int main(int argc, char *argv[])
                             copyMakeBorder(img_68, img_68, 10, 10, 10, 10, BORDER_ISOLATED, 255);
 
                             n_10_knn = getKNNChar(img_10, "10");
-                            n_68_tess = tess.extract(img_68);
+                            n_68_tess = tess.extract(img_68, "68");
 
                             if (n_10_knn.compare("10") == 0){
                                 knn_10_percent++;

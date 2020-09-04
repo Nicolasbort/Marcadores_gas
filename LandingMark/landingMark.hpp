@@ -1,4 +1,4 @@
-#include "../../include/defines.hpp"
+#include "../include/defines.hpp"
 
 #define DEBUGMODE true
 #define DEBBUGCOLOR false
